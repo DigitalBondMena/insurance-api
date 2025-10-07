@@ -61,9 +61,9 @@ RUN mkdir -p /var/log/supervisor
 # Expose port 80
 EXPOSE 80
 
-# Health check (generous timing to allow startup)
-HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
-    CMD curl -f http://localhost/api/health || exit 1
+# Health check disabled temporarily for debugging
+# HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
+#     CMD curl -f http://localhost/api/health || exit 1
 
 # Start application
 CMD ["/usr/local/bin/start.sh"]

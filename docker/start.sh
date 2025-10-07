@@ -24,6 +24,18 @@ php artisan route:clear 2>/dev/null || true
 
 echo "Starting services..."
 
-# Start supervisor
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+# Kill any existing nginx processes
+pkill -f nginx 2>/dev/null || true
+sleep 1
+
+# Start PHP-FPM in background
+php-fpm -F -R &
+PHP_PID=$!
+
+# Wait a bit for PHP-FPM to start
+sleep 2
+
+# Start Nginx in foreground
+echo "Starting Nginx..."
+exec nginx -g 'daemon off;'
 
