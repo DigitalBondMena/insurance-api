@@ -20,11 +20,13 @@ else
     php artisan migrate --force --no-interaction || echo "Migration failed or already done"
 fi
 
-# Clear and cache configuration
+# Clear caches first
 php artisan config:clear || true
-php artisan config:cache || true
-php artisan route:cache || true
-php artisan view:cache || true
+php artisan route:clear || true
+php artisan view:clear || true
+
+# Don't cache routes/config on startup (will be done manually after deployment)
+echo "Caches cleared. Ready to start!"
 
 # Create storage link if not exists
 php artisan storage:link || true
