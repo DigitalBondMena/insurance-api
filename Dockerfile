@@ -51,9 +51,9 @@ COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
 # Copy supervisor configuration
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Copy entrypoint script
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Copy startup script
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Create log directories
 RUN mkdir -p /var/log/supervisor
@@ -61,13 +61,10 @@ RUN mkdir -p /var/log/supervisor
 # Expose port 80
 EXPOSE 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+# Health check (generous timing to allow startup)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=5 \
     CMD curl -f http://localhost/api/health || exit 1
 
-# Set entrypoint
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# Start supervisor
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+# Start application
+CMD ["/usr/local/bin/start.sh"]
 

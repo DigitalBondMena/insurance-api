@@ -2,42 +2,42 @@
 
 echo "Starting application setup..."
 
-# Wait for database to be ready (using simple connection test)
-MAX_TRIES=30
-COUNT=0
-until php -r "new PDO('mysql:host=${DB_HOST};port=${DB_PORT};dbname=${DB_DATABASE}', '${DB_USERNAME}', '${DB_PASSWORD}');" 2>/dev/null || [ $COUNT -eq $MAX_TRIES ]; do
-    COUNT=$((COUNT+1))
-    echo "Waiting for database connection... (${COUNT}/${MAX_TRIES})"
-    sleep 3
-done
-
-if [ $COUNT -eq $MAX_TRIES ]; then
-    echo "WARNING: Could not connect to database after ${MAX_TRIES} attempts. Continuing anyway..."
-else
-    echo "Database connection successful!"
-    
-    # Run migrations
-    php artisan migrate --force --no-interaction || echo "Migration failed or already done"
-fi
-
-# Clear caches first
-php artisan config:clear || true
-php artisan route:clear || true
-php artisan view:clear || true
-
-# Don't cache routes/config on startup (will be done manually after deployment)
-echo "Caches cleared. Ready to start!"
+# Set proper permissions first
+chown -R www-data:www-data /var/www/html/storage 2>/dev/null || true
+chown -R www-data:www-data /var/www/html/bootstrap/cache 2>/dev/null || true
+chmod -R 775 /var/www/html/storage 2>/dev/null || true
+chmod -R 775 /var/www/html/bootstrap/cache 2>/dev/null || true
 
 # Create storage link if not exists
-php artisan storage:link || true
+php artisan storage:link 2>/dev/null || true
 
-# Set proper permissions
-chown -R www-data:www-data /var/www/html/storage || true
-chown -R www-data:www-data /var/www/html/bootstrap/cache || true
-chmod -R 775 /var/www/html/storage || true
-chmod -R 775 /var/www/html/bootstrap/cache || true
+# Clear caches
+php artisan config:clear 2>/dev/null || true
+php artisan route:clear 2>/dev/null || true
+php artisan view:clear 2>/dev/null || true
 
-echo "Application setup completed!"
+echo "Basic setup completed!"
+
+# Test database connection in background (don't block startup)
+(
+    MAX_TRIES=10
+    COUNT=0
+    echo "Testing database connection in background..."
+    until php -r "new PDO('mysql:host=${DB_HOST};port=${DB_PORT};dbname=${DB_DATABASE}', '${DB_USERNAME}', '${DB_PASSWORD}');" 2>/dev/null || [ $COUNT -eq $MAX_TRIES ]; do
+        COUNT=$((COUNT+1))
+        echo "DB check (${COUNT}/${MAX_TRIES})..."
+        sleep 2
+    done
+    
+    if [ $COUNT -eq $MAX_TRIES ]; then
+        echo "WARNING: Could not connect to database. Please check DB credentials."
+    else
+        echo "Database connected! Running migrations..."
+        php artisan migrate --force --no-interaction 2>&1 || echo "Migration skipped"
+    fi
+) &
+
+echo "Application ready to start!"
 
 # Execute the main command
 exec "$@"
