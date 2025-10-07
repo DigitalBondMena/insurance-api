@@ -28,24 +28,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
     Auth::routes();
 });
 
-Route::namespace('BackEnd')->prefix('admin')->middleware('auth')->group(function() {
-    Route::get('/dashboard', 'DashboardController@index')->name('backend.dashboard');
-    Route::resource('/about', 'AboutController');
-    Route::resource('/blogs', 'BlogController');
-    Route::resource('/clients', 'ClientsController');
-    Route::resource('/contacts', 'ContactController');
-    Route::resource('/contact_us', 'ContactUsController');
-    Route::resource('/feedbacks', 'FeedbackController');
-    Route::resource('/projects', 'ProjectsController');
-    Route::resource('/services', 'ServicesController');
-    Route::resource('/sliders', 'SlidersController');
-    Route::resource('/teams', 'TeamsController');
-    Route::resource('/projects', 'ProjectsController');
-    Route::resource('/banner_images', 'BannerImagesController');
-    Route::resource('/main', 'MainController');
-    Route::resource('/about_us_page', 'AboutUsPageController');
-    Route::resource('/services_page', 'ServicesPageController');
-});
+
 
 
 Auth::routes();
