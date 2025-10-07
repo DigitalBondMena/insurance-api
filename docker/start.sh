@@ -23,6 +23,12 @@ php artisan storage:link 2>/dev/null || true
 php artisan config:clear 2>/dev/null || true
 php artisan route:clear 2>/dev/null || true
 
+# Create nginx cache directory
+echo "Creating nginx cache directory..."
+mkdir -p /var/cache/nginx
+chown -R www-data:www-data /var/cache/nginx
+chmod -R 755 /var/cache/nginx
+
 echo "Starting services..."
 
 # Kill any existing nginx processes
