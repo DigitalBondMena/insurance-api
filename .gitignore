@@ -28,5 +28,3 @@ Thumbs.db
 !/storage/framework/cache/.gitignore
 !/storage/framework/sessions/.gitignore
 !/storage/framework/views/.gitignore
-/public/uploads/*
-!/public/uploads/.gitignore
