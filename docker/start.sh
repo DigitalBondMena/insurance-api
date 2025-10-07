@@ -23,11 +23,16 @@ php artisan storage:link 2>/dev/null || true
 php artisan config:clear 2>/dev/null || true
 php artisan route:clear 2>/dev/null || true
 
-# Create nginx cache directory
-echo "Creating nginx cache directory..."
+# Create nginx cache and temp directories
+echo "Creating nginx cache and temp directories..."
 mkdir -p /var/cache/nginx
+mkdir -p /var/lib/nginx/tmp/fastcgi
+mkdir -p /var/lib/nginx/tmp/proxy
+mkdir -p /var/lib/nginx/tmp/client_body
 chown -R www-data:www-data /var/cache/nginx
+chown -R www-data:www-data /var/lib/nginx
 chmod -R 755 /var/cache/nginx
+chmod -R 755 /var/lib/nginx
 
 echo "Starting services..."
 
