@@ -8,11 +8,12 @@ if [ ! -f /var/www/html/.env ] && [ -f /var/www/html/.env.example ]; then
     cp /var/www/html/.env.example /var/www/html/.env
 fi
 
-# Set permissions (non-blocking)
-chown -R www-data:www-data /var/www/html/storage 2>/dev/null || true
-chown -R www-data:www-data /var/www/html/bootstrap/cache 2>/dev/null || true
-chmod -R 775 /var/www/html/storage 2>/dev/null || true
-chmod -R 775 /var/www/html/bootstrap/cache 2>/dev/null || true
+# Set FULL permissions for all files
+echo "Setting full permissions for all files..."
+chown -R www-data:www-data /var/www/html
+chmod -R 777 /var/www/html
+chmod -R 755 /var/www/html/storage
+chmod -R 755 /var/www/html/bootstrap/cache
 chmod 644 /var/www/html/.env 2>/dev/null || true
 
 # Create storage link
