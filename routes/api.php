@@ -675,6 +675,16 @@ use Illuminate\Support\Facades\DB;
             Route::get('/{id}', 'BuildingLeadController@show');
             Route::post('/{id}', 'BuildingLeadController@update');
         });
+
+        Route::post('/sendPushNotification', 'WelcomeController@sendPushNotification')->name('sendPushNotification');
+        Route::get('/sendPushNotification', 'WelcomeController@sendPushNotification')->name('sendPushNotification');
+        
+        
+        Route::post('/sendSingleNotification', 'WelcomeController@sendSingleNotification')->name('sendSingleNotification');
+        Route::get('/sendSingleNotification', 'WelcomeController@sendSingleNotification')->name('sendSingleNotification');
+        
+        Route::post('/sendSingleNotificationClaim', 'WelcomeController@sendSingleNotificationClaim')->name('sendSingleNotificationClaim');
+        Route::get('/sendSingleNotificationClaim', 'WelcomeController@sendSingleNotificationClaim')->name('sendSingleNotificationClaim');
         
     // });
 
