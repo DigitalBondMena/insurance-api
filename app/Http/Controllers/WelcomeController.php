@@ -51,7 +51,7 @@ class WelcomeController extends Controller
         $tokensArray = array_chunk($uniqueArray, 1000); // Break tokens into chunks of 1000 for batch processing
     
         // Path to the Firebase service account credentials JSON file
-        $credentialsFilePath = "json/capital-insurance-8134f-a0ba5c65d52f.json";
+        $credentialsFilePath = "capital-insurance-8134f-a0ba5c65d52f.json";
     
         // Initialize the Google Client
         $client = new GoogleClient();
@@ -154,7 +154,7 @@ class WelcomeController extends Controller
         $uniqueArray = array_unique($userTokens);
         $tokensArray = array_chunk($uniqueArray, 1000);
     
-        $credentialsFilePath = "json/capital-insurance-8134f-a0ba5c65d52f.json";
+        $credentialsFilePath = "capital-insurance-8134f-a0ba5c65d52f.json";
     
         $client = new GoogleClient();
         $client->setAuthConfig($credentialsFilePath);
@@ -249,7 +249,7 @@ class WelcomeController extends Controller
         $uniqueArray = array_unique($userTokens);
         $tokensArray = array_chunk($uniqueArray, 1000);
     
-        $credentialsFilePath = "json/capital-insurance-8134f-a0ba5c65d52f.json";
+        $credentialsFilePath = "capital-insurance-8134f-a0ba5c65d52f.json";
     
         $client = new GoogleClient();
         $client->setAuthConfig($credentialsFilePath);
